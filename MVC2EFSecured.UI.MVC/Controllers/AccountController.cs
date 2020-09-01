@@ -16,6 +16,7 @@ namespace MVC2EFSecured.UI.MVC.Controllers
         {
         }
 
+        //  MOD 2.5 the ApplicationUserManager and ApplicationSignInManager are built in objects used to manage our application users
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {
             UserManager = userManager;
@@ -38,7 +39,7 @@ namespace MVC2EFSecured.UI.MVC.Controllers
         //
         // GET: /Account/Login
         [HttpGet]
-        [AllowAnonymous]
+        [AllowAnonymous] //  MOD 2.6 The [AllowAnonymous] attribute overrides the  [Authorization] attribute from above and allows anonymous users (anyone who is NOT logged in) access to this action
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -143,21 +144,33 @@ namespace MVC2EFSecured.UI.MVC.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
+        [AllowAnonymous] //  MOD 2.7a this means anyone can register, but we want to make sure any newly registered users also gets assigned to an appropriate role (no self-admins!)
         [ValidateAntiForgeryToken]
+        //  MOD 2.7b Here, the "model" variable containing all the data (from their form submission) passed into the Register method for the post of their new registration form.  This "model" is a RegisterViewModel.  If we right click RegisterViewModel in the method signature we see all the properties of the model being passed in.
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
+                //  MOD 2.7c  The "user" valriable below is the new user we are trying to create.  This new users has all the properties of the properties passed in from the Register form submission
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+
+                //  MOD 2.7d  Below, the CreateAsync() method adds the user object as a record in the database in the AspNetUsers table.  CreateAsync() method is Asynchronous, the 'await' keyword makes sure the method finishes before moving on 
                 var result = await UserManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
-                    var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
-                    ViewBag.Link = callbackUrl;
-                    return View("DisplayEmail");
+                    //MOD 2.7e we comment out the default code below so we can customize
+                    //var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    //await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
+                    //ViewBag.Link = callbackUrl;
+                    //return View("DisplayEmail");
+
+                    //  MOD 2.7f  Now we use the UserManager object to assign all anonymous registrations into the "Customer" role by default and then redirect them to the Login page
+                    #region Add user to a role and redirect to login
+                        UserManager.AddToRole(user.Id, "Customer");
+                        return RedirectToAction("Login");
+                    #endregion
                 }
                 AddErrors(result);
             }

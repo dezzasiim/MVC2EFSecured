@@ -15,10 +15,21 @@ namespace MVC2EFSecured.UI.MVC.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize] what role are you in??
+        // Authentication is about credentials - are you verified or not
         public ActionResult About()
         {
-            ViewBag.Message = "Your app description page.";
+            ViewBag.Message = "You are an unauthorized user";
+
+            if (User.IsInRole("Admin"))
+            {
+                ViewBag.Message = "Admins are awesome";
+            }
+            else if (User.IsInRole("Customer"))
+            {
+                ViewBag.Message = "Thanks for being a loyal customer";
+            }
+            else if (User.IsInRole("Support"))            {                ViewBag.Message = "Remmber there is an all-team Customer Support employee meeting 9/3";            }
 
             return View();
         }

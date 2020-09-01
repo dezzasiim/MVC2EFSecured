@@ -19,6 +19,9 @@
     <link rel="stylesheet" href="~/Content/assets/css/fontawesome.css">
     <link rel="stylesheet" href="~/Content/assets/css/templatemo-style.css">
     <link rel="stylesheet" href="~/Content/assets/css/owl.css">
+
+    <link href="~/Content/CustomStyles.css" rel="stylesheet" />
+
 </head>
 
 <body class="is-preload">
@@ -81,6 +84,9 @@
                         </li>*@
                         @* This will be used in the HomeController to POST a contact message request *@
                         <li><a href="@Url.Action("Contact", "Home")">Contact</a></li>
+
+                        @* Partial View and LOGOUT functionality *@
+                        @Html.Partial("_LoginPartial")
 
                     </ul>
                 </nav>
