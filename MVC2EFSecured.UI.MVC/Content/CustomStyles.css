@@ -162,3 +162,8 @@ textarea#Description
     {
         color:red;
     }
+
+/*login styling*/
+    .login-link{
+        margin-top: 20px;
+    }
