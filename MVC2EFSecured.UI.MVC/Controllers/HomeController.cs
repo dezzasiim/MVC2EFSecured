@@ -29,7 +29,10 @@ namespace MVC2EFSecured.UI.MVC.Controllers
             {
                 ViewBag.Message = "Thanks for being a loyal customer";
             }
-            else if (User.IsInRole("Support"))            {                ViewBag.Message = "Remmber there is an all-team Customer Support employee meeting 9/3";            }
+            else if (User.IsInRole("Support"))
+            {
+                ViewBag.Message = "Remmber there is an all-team Customer Support employee meeting 9/3";
+            }
 
             return View();
         }
