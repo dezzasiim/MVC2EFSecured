@@ -1,12 +1,135 @@
 ﻿@model MVC2EFSecured.DATA.EF.Book
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = Model.BookTitle + "Details";
 }
 
-<h2>Details</h2>
+@*  MOD 6.4 Shell Layout paste
+    <div id="bContainer">
+        <div id="bHeader">
+        </div>
 
-<div>
+        <div id="bLeft">
+        </div>
+
+        <div id="bRight">
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div id="bFooterLeft">
+        </div>
+
+        <div id="bFooterRight">
+        </div>
+
+        <div class="clearfix"></div>
+    </div>*@
+
+<h2>@ViewBag.Title</h2>
+
+<div id="bContainer">
+
+    <div id="bHeader">
+        @Html.DisplayFor(model => model.BookTitle)
+    </div>
+
+    <div id="bLeft">
+        <p>
+            <img src="~/Content/assets/images/Books/t_@Model.BookImage" alt="@Model.BookTitle" />
+        </p>
+        <p>
+            <strong>
+                @Html.DisplayNameFor(model => model.ISBN)
+                @Html.DisplayFor(model => model.ISBN)
+            </strong>
+        </p>
+        <p>
+            <strong>
+                @Html.DisplayNameFor(model => model.IsSiteFeature)
+                @Html.DisplayFor(model => model.IsSiteFeature)
+            </strong>
+        </p>
+        @if (User.IsInRole("Admin"))
+        {
+            <p>
+                <strong>
+                    @Html.DisplayNameFor(model => model.UnitsSold)
+                    @Html.DisplayFor(model => model.UnitsSold)
+                </strong>
+            </p>
+            <p>
+                <strong>
+                    @Html.DisplayNameFor(model => model.BookRoyalty.RoyaltyRate)
+                    @Html.DisplayFor(model => model.BookRoyalty.RoyaltyRate)
+                </strong>
+            </p>
+        }
+    </div>
+
+    <div id="bRight">
+        <p>
+            <strong>
+                @Html.DisplayNameFor(model => model.Price)
+                @Html.DisplayFor(model => model.Price)
+            </strong>
+        </p>
+        <p>
+            <strong>
+                @Html.DisplayNameFor(model => model.BookStatus.BookStatusName)
+                @Html.DisplayFor(model => model.BookStatus.BookStatusName)
+            </strong>
+        </p>
+        <p>
+            <strong>
+                @Html.DisplayNameFor(model => model.Publisher.PublisherName)
+                @Html.DisplayFor(model => model.Publisher.PublisherName)
+            </strong>
+        </p>
+        <p>
+            <strong>
+                @Html.DisplayNameFor(model => model.PublishDate)
+                @Html.DisplayFor(model => model.PublishDate)
+            </strong>
+        </p>
+        <p>
+            <strong>
+                @Html.DisplayNameFor(model => model.Genre.GenreName)
+                @Html.DisplayFor(model => model.Genre.GenreName)
+            </strong>
+        </p>
+        <p>
+            <strong>
+                @Html.DisplayNameFor(model => model.IsGenreFeature)
+                @(Model.IsGenreFeature ? "Yes" : "No")
+            </strong>
+        </p>
+        <p>
+            <strong>
+                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayFor(model => model.Description)
+            </strong>
+        </p>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div id="bFooterLeft">
+        @if(User.IsInRole("Admin") || User.IsInRole("Support"))
+        {
+            @Html.ActionLink("Edit", "Edit", new { id= Model.BookID})
+        }
+    </div>
+
+    <div id="bFooterRight">
+        @Html.ActionLink("Back to Books", "Index", null, new { @class = "btn btn-secondary" })
+    </div>
+
+    <div class="clearfix"></div>
+
+</div>
+
+@*<div>
     <h4>Book</h4>
     <hr />
     <dl class="dl-horizontal">
@@ -119,4 +242,4 @@
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.BookID }) |
     @Html.ActionLink("Back to List", "Index")
-</p>
+</p>*@
