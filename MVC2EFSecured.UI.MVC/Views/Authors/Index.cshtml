@@ -5,10 +5,13 @@
 }
 
 <h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@* Only Allow an Admin to create a new author *@
+@if (User.IsInRole("Admin"))
+    {
+        <p>
+         @Html.ActionLink("Create New", "Create")
+        </p>
+    }
 <table class="table">
     <tr>
         <th>

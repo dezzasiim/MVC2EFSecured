@@ -79,7 +79,8 @@ namespace MVC2EFSecured.DATA.EF//Make sure this namespace matches the Namespace 
         [DisplayFormat(NullDisplayText = "NA")]
         public string Description { get; set; }
 
-       // public Nullable<int> GenreID { get; set; }
+        [Display(Name = "Genre")]
+        public Nullable<int> GenreID { get; set; }
 
        [Range(0,double.MaxValue, ErrorMessage = "* Price must be a valid number, 0 or larger")]
        [DisplayFormat(NullDisplayText ="NA",DataFormatString ="{0:c}")]
@@ -93,7 +94,9 @@ namespace MVC2EFSecured.DATA.EF//Make sure this namespace matches the Namespace 
         [Display(Name = "Published")]
         [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true,NullDisplayText = "NA")]
         public Nullable<System.DateTime> PublishDate { get; set; }
-        //  public int PublisherID { get; set; }
+
+        [Display(Name = "Publisher")]
+          public int PublisherID { get; set; }
 
         [Display(Name = "Image")]
         [DisplayFormat(NullDisplayText = "NA")]
@@ -104,7 +107,9 @@ namespace MVC2EFSecured.DATA.EF//Make sure this namespace matches the Namespace 
 
         [Display(Name = "Genre Feature")]
         public bool IsGenreFeature { get; set; }
-      //  public int BookStatusID { get; set; }
+
+        [Display(Name ="Book Status")]
+        public int BookStatusID { get; set; }
     }
     [MetadataType(typeof(BookMetaData))]
     public partial class Book
@@ -112,4 +117,53 @@ namespace MVC2EFSecured.DATA.EF//Make sure this namespace matches the Namespace 
 
     }
     #endregion
+
+    #region Book metadata
+    public class BookStatusMetaData
+    {
+        //public int BookStatusID { get; set; }
+        [Display(Name = "Book Status")]
+        [Required(ErrorMessage = "* Required")]
+        [StringLength(25, ErrorMessage = "* The value must be 25 characters or less.")]
+        public string BookStatusName { get; set; }
+
+
+        [DisplayFormat(NullDisplayText = "NA")]
+        [StringLength(100, ErrorMessage = "* The value must be 100 characters or less.")]
+        public string Notes { get; set; }
+    }
+
+    [MetadataType(typeof(BookStatusMetaData))]
+    public partial class BookStatus
+    {
+
+    }
+    #endregion
+
+    #region Genre Metadata
+    public class GenreMetaData
+    {
+        //public int GenreID { get; set; }
+        [Required(ErrorMessage = "* Required")]
+        [StringLength(50, ErrorMessage = "* The value must be 50 characters or less.")]
+        [Display(Name = "Genre")]
+        public string GenreName { get; set; }
+    }
+
+    [MetadataType(typeof(GenreMetaData))]
+    public partial class Genre
+    {
+
+    }
+    
+    #endregion
+
+    #region Publisher Metadata    public class PublisherMetadata    {
+        //public int PublisherID { get; set; }
+        [Display(Name = "Publisher")]        [StringLength(50, ErrorMessage = "* Value must be 50 characters or less.")]        [Required(ErrorMessage = "*")]        public string PublisherName { get; set; }        [StringLength(50, ErrorMessage = "* Value must be 50 characters or less.")]        [DisplayFormat(NullDisplayText = "[-N/A-]")]        public string City { get; set; }        [StringLength(2, ErrorMessage = "* Value must be 2 characters.")]        [DisplayFormat(NullDisplayText = "[-N/A-]")]        public string State { get; set; }        [Display(Name = "Active")]        public bool IsActive { get; set; }    }
+    [MetadataType(typeof(PublisherMetadata))]    public partial class Publisher { }    #endregion
+
+
+   
 }
+

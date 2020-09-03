@@ -5,41 +5,22 @@
 }
 
 <h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@if (User.IsInRole("Admin") || User.IsInRole("Support"))
+    {
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+    }
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.ISBN)
+            @Html.DisplayNameFor(model => model.BookImage)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.BookTitle)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.Price)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UnitsSold)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PublishDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BookImage)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsSiteFeature)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsGenreFeature)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BookRoyalty.BookID)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.BookStatus.BookStatusName)
@@ -47,43 +28,31 @@
         <th>
             @Html.DisplayNameFor(model => model.Genre.GenreName)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Publisher.PublisherName)
-        </th>
+        @if (User.IsInRole("Admin") || User.IsInRole("Support"))
+        {
         <th></th>
+        }
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.ISBN)
+            @if (item.Genre != null)
+            {
+                <img src="~/Content/assets/images/Books/t_@item.BookImage" alt="@item.BookTitle (@item.Genre.GenreName)" />
+            }
+            else
+            {
+                <img src="~/Content/assets/images/Books/t_@item.BookImage" alt="@item.BookTitle (No Genre Available)" />
+            }
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.BookTitle)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
+            <a href="@Url.Action("Details", new {id=item.BookID})" title="@item.BookTitle">
+                @Html.DisplayFor(modelItem => item.BookTitle)
+            </a>
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Price)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UnitsSold)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PublishDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BookImage)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsSiteFeature)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsGenreFeature)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BookRoyalty.BookID)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.BookStatus.BookStatusName)
@@ -91,14 +60,20 @@
         <td>
             @Html.DisplayFor(modelItem => item.Genre.GenreName)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Publisher.PublisherName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.BookID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.BookID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.BookID })
-        </td>
+        @if (User.IsInRole("Admin") || User.IsInRole("Support"))
+        {
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.BookID }) |
+                @if (item.BookAuthors.Count == 0)
+                {
+                @Html.ActionLink("Delete", "Delete", new { id = item.BookID })
+                }
+                else
+                {
+                    <span class="text-danger">This book has an BookAuthor record so it cannot be deleted</span>
+                }
+            </td>
+        }
     </tr>
 }
 

@@ -35,6 +35,9 @@ namespace MVC2EFSecured.UI.MVC.Controllers
             return View(author);
         }
 
+        // TIP: If you misspell a Role it does not throw an error it just does not work as you would expect
+        //ex: [Authorize(Roles = "Adminb")]
+        [Authorize(Roles = "Admin")]
         // GET: Authors/Create
         public ActionResult Create()
         {
@@ -46,6 +49,7 @@ namespace MVC2EFSecured.UI.MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create([Bind(Include = "AuthorID,FirstName,LastName,City,State,ZipCode,Country")] Author author)
         {
             if (ModelState.IsValid)
@@ -59,6 +63,7 @@ namespace MVC2EFSecured.UI.MVC.Controllers
         }
 
         // GET: Authors/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -78,6 +83,7 @@ namespace MVC2EFSecured.UI.MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "AuthorID,FirstName,LastName,City,State,ZipCode,Country")] Author author)
         {
             if (ModelState.IsValid)
@@ -90,6 +96,7 @@ namespace MVC2EFSecured.UI.MVC.Controllers
         }
 
         // GET: Authors/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -107,6 +114,7 @@ namespace MVC2EFSecured.UI.MVC.Controllers
         // POST: Authors/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteConfirmed(int id)
         {
             Author author = db.Authors.Find(id);

@@ -37,6 +37,7 @@ namespace MVC2EFSecured.UI.MVC.Controllers
         }
 
         // GET: Books/Create
+        [Authorize(Roles = "Admin, Support")] // For multiple roles it is simply a commma separated list
         public ActionResult Create()
         {
             ViewBag.BookID = new SelectList(db.BookRoyalties, "BookID", "BookID");
@@ -51,6 +52,7 @@ namespace MVC2EFSecured.UI.MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Support")]
         public ActionResult Create([Bind(Include = "BookID,ISBN,BookTitle,Description,GenreID,Price,UnitsSold,PublishDate,PublisherID,BookImage,IsSiteFeature,IsGenreFeature,BookStatusID")] Book book)
         {
             if (ModelState.IsValid)
@@ -68,6 +70,7 @@ namespace MVC2EFSecured.UI.MVC.Controllers
         }
 
         // GET: Books/Edit/5
+        [Authorize(Roles = "Admin, Support")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -91,6 +94,7 @@ namespace MVC2EFSecured.UI.MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Support")]
         public ActionResult Edit([Bind(Include = "BookID,ISBN,BookTitle,Description,GenreID,Price,UnitsSold,PublishDate,PublisherID,BookImage,IsSiteFeature,IsGenreFeature,BookStatusID")] Book book)
         {
             if (ModelState.IsValid)
@@ -107,6 +111,7 @@ namespace MVC2EFSecured.UI.MVC.Controllers
         }
 
         // GET: Books/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -124,6 +129,7 @@ namespace MVC2EFSecured.UI.MVC.Controllers
         // POST: Books/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteConfirmed(int id)
         {
             Book book = db.Books.Find(id);
