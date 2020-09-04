@@ -6,8 +6,8 @@
 
 <h2>Index</h2>
 @* Only Allow an Admin to create a new author *@
-@if (User.IsInRole("Admin"))
-    {
+@if (User.IsInRole("Admin") || User.IsInRole("Support"))
+{
         <p>
          @Html.ActionLink("Create New", "Create")
         </p>
@@ -56,9 +56,16 @@
             @Html.DisplayFor(modelItem => item.Country)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.AuthorID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.AuthorID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.AuthorID })
+            @*afternoon lab edit 1*@
+            @if (User.IsInRole("Admin") || User.IsInRole("Support")) { 
+                @Html.ActionLink("Edit", "Edit", new { id = item.AuthorID }) |
+            @Html.ActionLink("Details", "Details", new { id = item.AuthorID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.AuthorID })
+            }
+            else
+            {
+            
+            }
         </td>
     </tr>
 }

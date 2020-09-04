@@ -17,7 +17,14 @@ namespace MVC2EFSecured.UI.MVC.Controllers
         // GET: Publishers
         public ActionResult Index()
         {
-            return View(db.Publishers.ToList());
+            //return View(db.Publishers.ToList());
+            return View(db.Publishers.Where(p => p.IsActive).ToList());
+        }
+
+        // Custom Controller Method for Inactive Publishers
+        public ActionResult Inactive()
+        {
+            return View(db.Publishers.Where(p => !p.IsActive).ToList());
         }
 
         // GET: Publishers/Details/5
@@ -109,8 +116,15 @@ namespace MVC2EFSecured.UI.MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            // Current/scaffolded State is that the delete method actually removes the publisher from the DB.  This is a very permanent action.  Instead, we can use a pattern known as “soft delete”.  Soft delete uses bools to toggle things off/on or active/inactive 
+            //Publisher publisher = db.Publishers.Find(id);
+            //db.Publishers.Remove(publisher);//This isa "hard delete", beacuse the data is removed from the database
+            //db.SaveChanges();
+            //return RedirectToAction("Index");
+
+            // Soft Delete
             Publisher publisher = db.Publishers.Find(id);
-            db.Publishers.Remove(publisher);
+            publisher.IsActive = !publisher.IsActive;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

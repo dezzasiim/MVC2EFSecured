@@ -1,14 +1,20 @@
 ﻿@model IEnumerable<MVC2EFSecured.DATA.EF.Publisher>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = (User.IsInRole("Admin")? "Active Publishers":"Deactivated Publishers");
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<div class="row">
+    <div class="col-md-6">
+        @Html.ActionLink("Add new Publisher", "Create", "Publishers", null, new { @class = "btn btn-primary" })
+    </div>
+    <div class="col-md-6 text-right">
+        @Html.ActionLink("View inactive", "Inactive", "Publishers", null, new { @class = "btn btn-secondary" })
+    </div>
+</div>
+
 <table class="table">
     <tr>
         <th>
@@ -20,10 +26,10 @@
         <th>
             @Html.DisplayNameFor(model => model.State)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.IsActive)
-        </th>
-        <th></th>
+        </th>*@
+        <th>@* Placeholder for EDit/Deactivate *@</th>
     </tr>
 
 @foreach (var item in Model) {
@@ -37,13 +43,16 @@
         <td>
             @Html.DisplayFor(modelItem => item.State)
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.IsActive)
-        </td>
+        </td>*@
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PublisherID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PublisherID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PublisherID })
+            @if (User.IsInRole("Admin") || User.IsInRole("Support")) {
+            @Html.ActionLink("Edit", "Edit", new { id = item.PublisherID })
+            }|
+            @*@Html.ActionLink("Details", "Details", new { id=item.PublisherID }) |*@
+            @*@Html.ActionLink("Delete", "Delete", new { id=item.PublisherID })*@
+            @Html.ActionLink("Deactivate", "Delete", "Publishers", new { id=item.PublisherID}, new { @class="text-danger"})
         </td>
     </tr>
 }

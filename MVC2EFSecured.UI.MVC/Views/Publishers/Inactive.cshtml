@@ -1,0 +1,58 @@
+﻿@model IEnumerable<MVC2EFSecured.DATA.EF.Publisher>
+
+
+@{
+    ViewBag.Title = "Inactive Publishers";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="row">
+    
+    <div class="col-md-6 text-right">
+        @Html.ActionLink("View Active", "Index", "Publishers", null, new { @class = "btn btn-secondary" })
+    </div>
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PublisherName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.State)
+        </th>
+        @*<th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>*@
+        <th>@* Placeholder for EDit/Deactivate *@</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PublisherName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.State)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>*@
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.PublisherID }) |
+                @*@Html.ActionLink("Details", "Details", new { id=item.PublisherID }) |*@
+                @*@Html.ActionLink("Delete", "Delete", new { id=item.PublisherID })*@
+                @Html.ActionLink("Activate", "Delete", "Publishers", new { id = item.PublisherID }, new { @class = "text-danger" })
+            </td>
+        </tr>
+    }
+
+</table>

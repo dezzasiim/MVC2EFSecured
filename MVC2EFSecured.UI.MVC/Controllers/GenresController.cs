@@ -20,6 +20,12 @@ namespace MVC2EFSecured.UI.MVC.Controllers
             return View(db.Genres.ToList());
         }
 
+        //A new method/action to handle the ViewasTable Toggle
+        public ActionResult GenreTable()
+        {
+            return View(db.Genres.ToList());
+        }
+
         // GET: Genres/Details/5
         public ActionResult Details(int? id)
         {
